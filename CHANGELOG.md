@@ -1,4 +1,5 @@
 ### 4.2
+ - Maintained fork: load built-in utilities on the first `menu` invocation without requiring `Bypass-4MSI`
  - Fixed menu output normalization when PowerShell output already uses LF line endings
 
 ### 4.1

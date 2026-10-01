@@ -1529,14 +1529,12 @@ class EvilWinRM
             elsif command.start_with?('menu')
               command = ''
               silent_warnings do
-                if @Bypass_4MSI_loaded
-                  unless @psLoaded
-                      print_message("Bypass-4MSI is loaded. Trying to load utilities", TYPE_INFO, true, $logger)
-                      shell.run(donuts)
-                      shell.run(invokeBin)
-                      shell.run(dllloader)
-                      @psLoaded = true
-                  end
+                unless @psLoaded
+                  print_message('Trying to load utilities', TYPE_INFO, true, $logger)
+                  shell.run(donuts)
+                  shell.run(invokeBin)
+                  shell.run(dllloader)
+                  @psLoaded = true
                 end
                 outputs = load_powershell(shell, menu, 2)
                 puts(get_banner)

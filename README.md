@@ -1,6 +1,12 @@
 # Evil-WinRM [![Version-shield]](https://raw.githubusercontent.com/Hackplayers/evil-winrm/master/evil-winrm.rb) [![Ruby2.3-shield]](https://www.ruby-lang.org/en/news/2015/12/25/ruby-2-3-0-released/) [![Gem-Version]](https://rubygems.org/gems/evil-winrm) [![License-shield]](https://raw.githubusercontent.com/Hackplayers/evil-winrm/master/LICENSE) [![Docker-shield]](https://github.com/Hackplayers/evil-winrm/actions/workflows/master.yml)
 The ultimate WinRM shell for hacking/pentesting
 
+> [!IMPORTANT]
+> **This is a maintained fork of [Hackplayers/evil-winrm](https://github.com/Hackplayers/evil-winrm).**
+> Its `dev` branch deliberately loads `Invoke-Binary`, `Dll-Loader`, and `Donut-Loader` on the first `menu` invocation without requiring `Bypass-4MSI`.
+> This differs from upstream behavior: loading the definitions before applying an AMSI bypass may allow endpoint security products to inspect or block them.
+> Use this fork only on systems where you have explicit authorization, evaluate the trade-off for each engagement, and see [FORK_NOTES.md](FORK_NOTES.md) before use.
+
 ![Banner](https://raw.githubusercontent.com/Hackplayers/evil-winrm/dev/resources/evil-winrm_logo.png)
 
 ## Description & Purpose
@@ -78,7 +84,10 @@ The remote path completion feature requires the native `readline-ext` binding, w
 
 ## Installation & Quick Start (4 methods)
 
-### Method 1. Installation directly as ruby gem (dependencies will be installed automatically on your system)
+> [!NOTE]
+> The published `evil-winrm` RubyGem and `oscarakaelvis/evil-winrm` Docker image are upstream artifacts and do not include this fork's menu-loading behavior. Use Method 2 or Method 3 with the `dev` branch to run this maintained fork.
+
+### Method 1. Installation directly as ruby gem (upstream release)
  - Step 1. Install it (it will install automatically dependencies): ```gem install evil-winrm```
  - Step 2. Ready. Just launch it!
 ```
@@ -87,7 +96,7 @@ evil-winrm  -i 192.168.1.100 -u Administrator -p 'MySuperSecr3tPass123!' -s '/ho
 
 ### Method 2. Git clone and install dependencies on your system manually
  - Step 1. Install dependencies manually: `sudo gem install winrm winrm-fs stringio logger fileutils readline readline-ext`
- - Step 2. Clone the repo: `git clone https://github.com/Hackplayers/evil-winrm.git`
+ - Step 2. Clone this fork's maintained branch: `git clone --branch dev https://github.com/w41l3r/evil-winrm.git`
  - Step 3. Ready. Just launch it!
 ```
 cd evil-winrm && ruby evil-winrm.rb -i 192.168.1.100 -u Administrator -p 'MySuperSecr3tPass123!' -s '/home/foo/ps1_scripts/' -e '/home/foo/exe_files/'
@@ -95,7 +104,7 @@ cd evil-winrm && ruby evil-winrm.rb -i 192.168.1.100 -u Administrator -p 'MySupe
 
 ### Method 3. Using bundler (dependencies will not be installed on your system, just to use evil-winrm)
  - Step 1. Install bundler: `gem install bundler`
- - Step 2. Clone the repo: `git clone https://github.com/Hackplayers/evil-winrm.git`
+ - Step 2. Clone this fork's maintained branch: `git clone --branch dev https://github.com/w41l3r/evil-winrm.git`
  - Step 3. Install dependencies with bundler: `cd evil-winrm && bundle install --path vendor/bundle`
  - Step 4. Launch it with bundler:
 ```
@@ -126,15 +135,11 @@ To use IPv6, the address must be added to /etc/hosts. Just put the already set n
    If you are using Evil-WinRM in a docker environment, bear in mind that all local paths should be at `/data` and be pretty sure that you mapped it as a volume in order to be able to access to downloaded files or to be able to upload files from your local host O.S.
 
  - **services**: list all services showing if there your account has permissions over each one. No administrator permissions needed to use this feature.
- - **menu**: list the available commands and loaded PowerShell functions. The built-in `Invoke-Binary`, `Dll-Loader` and `Donut-Loader` functions are loaded only after running `Bypass-4MSI`. Run `menu` again afterwards to load and display them.
+ - **menu**: list the available commands and loaded PowerShell functions. In this fork, the first invocation loads and displays the built-in `Invoke-Binary`, `Dll-Loader`, and `Donut-Loader` functions independently of the `Bypass-4MSI` state. This restores direct access when the bypass cannot or should not be run, but the definitions may be inspected or blocked by endpoint security products.
  - **clear** or **cls**: clear the terminal screen. You can also use `Ctrl+L` keyboard shortcut to clear the screen.
  - **exit** or **quit**: close the Evil-WinRM session. You can also use the `Ctrl+D` keyboard shortcut.
 
 ```
-*Evil-WinRM* PS C:\> Bypass-4MSI
-
-[+] Success!
-
 *Evil-WinRM* PS C:\> menu
 
    ,.   (   .      )               "            ,.   (   .      )       .
@@ -533,7 +538,7 @@ activate = 1
 
 
 ## Changelog:
-Changelog and project changes can be checked here: [CHANGELOG.md](https://raw.githubusercontent.com/Hackplayers/evil-winrm/master/CHANGELOG.md)
+Fork-specific and inherited project changes can be checked in [CHANGELOG.md](CHANGELOG.md). The original project history remains available from [Hackplayers/evil-winrm](https://github.com/Hackplayers/evil-winrm).
 
 ## Credits:
 Staff:
